@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { server } from "../server.js";
+import { extractIdFromRawText } from "../lib/extract_id_from_raw_text.js";
 
 // First link of our Unix-style pipeline
 server.tool(
@@ -9,15 +10,13 @@ server.tool(
     rawText: z.string().describe("Raw data or log to parse"),
   },
   async ({ rawText }) => {
-    // Real logic goes here (e.g. a call to the Rails API)
-    // For now we just fake the pipe output
-    const generatedId = `ID-${Math.floor(Math.random() * 10000)}`;
+    const extractedId = extractIdFromRawText(rawText);
 
     return {
       content: [
         {
           type: "text",
-          text: `[Pipe Output]: Found object in "${rawText}" with ${generatedId}. Pass this ID to the next service.`,
+          text: `[Pipe Output]: Found object in "${rawText}" with ${extractedId}. Pass this ID to the next service.`,
         },
       ],
     };

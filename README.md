@@ -81,5 +81,14 @@ npm run inspect:cli -- --method tools/list
 ## Available tools
 
 - `step_one_grep_data` — takes raw text and extracts a mock ID from it, meant
-  as the first link of a Unix-style tool pipeline
+  as the first link of a Unix-style tool pipeline.
+  It supports patterns like `ID-123` and key/value input like `user_id=123`.
   ([src/tools/step_one_grep_data.ts](src/tools/step_one_grep_data.ts)).
+
+## Testing
+
+Run:
+
+```bash
+npm test
+```
