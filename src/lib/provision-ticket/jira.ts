@@ -1,9 +1,4 @@
-import type { JiraTicket } from "./types.js";
-
-// TODO: call the real Jira API.
-export async function findTicket(ticketKey: string): Promise<JiraTicket> {
-  throw new Error(`not implemented: findTicket(${ticketKey})`);
-}
+export { readJiraTicket as findTicket } from "../jira.js";
 
 // TODO: call the real Jira API.
 export async function transitionToInProgress(ticketKey: string): Promise<void> {

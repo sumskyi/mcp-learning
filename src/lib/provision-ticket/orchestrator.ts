@@ -8,9 +8,8 @@ import { formatReport } from "./report.js";
 import type { ProvisionTicketReport, VersionSet, VersionsByRepo } from "./types.js";
 
 // Orchestrates the provision_ticket workflow, step by step, across the repos
-// this specific ticket touches. Every step function is currently a stub (see
-// jira/git/version/bootstrap/bitbucket.ts) — this only fixes the order the
-// real implementations must run in.
+// this specific ticket touches. Ticket reading uses the Jira API; mutation
+// steps remain stubs in jira/git/version/bootstrap/bitbucket.ts.
 //
 // `repoNames` is supplied by the caller per call — most tickets touch a
 // subset of the known repos, never a hardcoded "always all of them" set

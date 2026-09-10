@@ -7,7 +7,7 @@ See [AGENTS.md](AGENTS.md) for project structure and conventions.
 
 ## Requirements
 
-- Node.js
+- Node.js 22 or newer
 - npm
 
 ## Install
@@ -84,6 +84,43 @@ npm run inspect:cli -- --method tools/list
   as the first link of a Unix-style tool pipeline.
   It supports patterns like `ID-123` and key/value input like `user_id=123`.
   ([src/tools/step_one_grep_data.ts](src/tools/step_one_grep_data.ts)).
+
+## Reading Jira tickets
+
+`read_jira_ticket` reads a Jira Cloud ticket by key and returns its key,
+summary, description (Jira wiki text), status, and assignee as JSON text.
+It does not modify the ticket. Comments and attachments are not fetched.
+
+Set these variables in a `.env` file in the project root, or in the MCP
+client's server `env` settings:
+
+```text
+JIRA_BASE_URL=https://your-team.atlassian.net
+JIRA_EMAIL=you@example.com
+JIRA_API_TOKEN=your-api-token
+```
+
+Use an Atlassian API token, not your account password. For a scoped token,
+set `JIRA_BASE_URL=https://api.atlassian.com/ex/jira/YOUR_CLOUD_ID` and give
+the token permission to read issues. Credentials are read at tool-call time;
+other tools can run without them. The server loads `.env` from its working
+directory when present, including when launched through the Inspector.
+Existing process environment variables take precedence. Restart the server
+after editing `.env`. The file is excluded from Git.
+
+```bash
+npm run inspect:cli -- --method tools/call \
+  --tool-name read_jira_ticket \
+  --tool-args-json '{"ticketKey":"NOTE-3456"}'
+```
+
+Requests use HTTPS, reject redirects, and time out after 15 seconds.
+Authentication, permission, missing-ticket, and rate-limit failures return MCP
+tool errors. The shared reader also implements `provision_ticket`'s ticket
+lookup; the rest of that provisioning workflow remains unimplemented.
+
+References: [Jira Get issue API](https://developer.atlassian.com/cloud/jira/platform/rest/v2/api-group-issues/#api-rest-api-2-issue-issueidorkey-get)
+and [API token authentication](https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/).
 
 ## Testing
 

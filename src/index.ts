@@ -1,4 +1,5 @@
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { loadEnvFile } from "node:process";
 import { server } from "./server.js";
 
 // Registering tools/resources/prompts here (after `server` is fully
@@ -8,6 +9,12 @@ import "./resources/index.js";
 import "./prompts/index.js";
 
 async function main(): Promise<void> {
+  try {
+    loadEnvFile();
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+  }
+
   const transport = new StdioServerTransport();
 
   await server.connect(transport);
@@ -21,4 +28,3 @@ main().catch((error) => {
   console.error(error);
   process.exit(1);
 });
-
