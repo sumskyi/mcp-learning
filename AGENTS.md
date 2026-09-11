@@ -15,15 +15,15 @@ src/
   index.ts       — entry point: sets up StdioServerTransport and connects the server
   server.ts      — McpServer instance; tools/resources/prompts are wired up here
   tools/         — MCP tools (one file per tool, index.ts imports all of them)
-  resources/     — MCP resources (currently empty)
-  prompts/       — MCP prompts (currently empty)
+  resources/     — MCP resources (one file per resource)
+  prompts/       — MCP prompt templates (one file per prompt)
   lib/           — shared logic/helpers
 ```
 
 ## Adding a new tool
 
 1. Create a file in `src/tools/`, following the pattern in
-   [step_one_grep_data.ts](src/tools/step_one_grep_data.ts):
+   [read_jira_ticket.ts](src/tools/read_jira_ticket.ts):
    `server.tool(name, description, zodSchema, handler)`.
 2. Add `import "./file-name";` to [src/tools/index.ts](src/tools/index.ts).
 
